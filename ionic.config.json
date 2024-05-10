@@ -1,0 +1,7 @@
+{
+  "name": "movie",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
