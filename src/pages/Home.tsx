@@ -17,15 +17,14 @@ import {
   useIonLoading,
 } from "@ionic/react";
 import "./Home.css";
-import { videocamOutline } from "ionicons/icons"
+import { videocamOutline } from "ionicons/icons";
 
 //import movie api
 import { useEffect, useState } from "react";
 import useApi, { SearchResult, SearchType } from "../hooks/useApi";
 
 const Home: React.FC = () => {
-
-  const {searchData} = useApi();
+  const { searchData } = useApi();
 
   //states to hold search keyword, type and results
   const [searchTerm, setSearchTerm] = useState("");
@@ -35,43 +34,43 @@ const Home: React.FC = () => {
   const [loading, dismiss] = useIonLoading();
 
   useEffect(() => {
-    if(searchTerm===''){
+    if (searchTerm === "") {
       setResults([]);
-      return
+      return;
     }
 
-    const loadData = async() =>{
+    const loadData = async () => {
       const res: any = await searchData(searchTerm, type);
-      console.log('Lele bhai sara movies ka data', res);
-      await dismiss()
-      if(res?.Error){
-        presentAlert(res.Error)
+      console.log("Lele bhai sara movies ka data", res);
+      await dismiss();
+      if (res?.Error) {
+        presentAlert(res.Error);
+      } else {
+        setResults(res.Search);
       }
-      else{
-        setResults(res.Search)
-      }
-    }
+    };
 
-    loadData()
+    loadData();
   }, [searchTerm, type]);
 
   const showClickResponse = () => {
-    presentAlert('Abhi hum itne ameer nahi hain! Jab paise honge tab dikha denge movie')
-  }
+    presentAlert(
+      "Abhi hum itne ameer nahi hain! Jab paise honge tab dikha denge movie"
+    );
+  };
 
   return (
     <IonPage>
-        {/* App title */}
+      {/* App title */}
       <IonHeader>
-        <IonToolbar color={'primary'}>
+        <IonToolbar color={"primary"}>
           <IonTitle>
-            <text>Movies</text>
-            <text style={{ color: "black" }}>Hub</text>
+            <span>Movies</span>
+            <span style={{ color: "black" }}>Hub</span>
           </IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
-
         {/* Search bar to enter search words */}
         <IonSearchbar
           value={searchTerm}
@@ -91,19 +90,19 @@ const Home: React.FC = () => {
         </IonItem>
 
         <IonList>
-          {
-            results.map((item: SearchResult)=>(
-              <IonItem key={item.imdbID}>
-                <IonAvatar slot="start">
-                  <IonImg src={item.Poster}></IonImg>
-                </IonAvatar>
-              <IonLabel>
-                {item.Title}
-              </IonLabel>
-              <IonIcon slot="end" icon={videocamOutline} onClick={showClickResponse}/>
-              </IonItem>
-            ))
-          }
+          {results.map((item: SearchResult) => (
+            <IonItem key={item.imdbID}>
+              <IonAvatar slot="start">
+                <IonImg src={item.Poster}></IonImg>
+              </IonAvatar>
+              <IonLabel>{item.Title}</IonLabel>
+              <IonIcon
+                slot="end"
+                icon={videocamOutline}
+                onClick={showClickResponse}
+              />
+            </IonItem>
+          ))}
         </IonList>
       </IonContent>
     </IonPage>
